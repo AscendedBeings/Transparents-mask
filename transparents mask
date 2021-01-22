@@ -1,0 +1,28 @@
+void draw_transparent_area(Mat &image_parameter, const Rect trans_area_parameter, const CvScalar color_parameter, const double alpha_parameter)
+//parameter image is the image which need to mask
+//parameter trans_area of image is the area which need to mask
+//parameter color is the color of masked area
+//parameter alpha between 0 to 1, colse 1 will has high degree of transparency
+{
+	double transparency_degree = alpha_parameter;
+	if (transparency_degree < 0)
+	{
+		transparency_degree = 0;
+	}
+	if (transparency_degree > 1)
+	{
+		transparency_degree = 1;
+	}
+	int Blue = color_parameter.val[0];
+	int Green = color_parameter.val[1];
+	int Red = color_parameter.val[2];
+	for (int j = trans_area_parameter.x; j < trans_area_parameter.x + trans_area_parameter.width; j++)
+	{
+		for (int i = trans_area_parameter.y; i < trans_area_parameter.y + trans_area_parameter.height; i++)
+		{
+			image_parameter.ptr<Vec3b>(i)[j][0] = image_parameter.ptr<Vec3b>(i)[j][0] * alpha_parameter + (1 - alpha_parameter)*Blue;
+			image_parameter.ptr<Vec3b>(i)[j][1] = image_parameter.ptr<Vec3b>(i)[j][1] * alpha_parameter + (1 - alpha_parameter)*Green;
+			image_parameter.ptr<Vec3b>(i)[j][2] = image_parameter.ptr<Vec3b>(i)[j][2] * alpha_parameter + (1 - alpha_parameter)*Red;
+		}
+	}
+}
